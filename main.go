@@ -31,9 +31,6 @@ type Contact struct {
 }
 
 
-
-
-
 //function to handle /contact 
 
 func contactCreate(w http.ResponseWriter, r *http.Request) {
@@ -61,9 +58,6 @@ func contactCreate(w http.ResponseWriter, r *http.Request) {
 	
 	//	fmt.Println("Connected to MongoDB!")        checking connection with db
 	
-	
-	
-	
 	  insertResult, err := coll.InsertOne(
 		context.Background(),
 		bson.D{
@@ -71,28 +65,11 @@ func contactCreate(w http.ResponseWriter, r *http.Request) {
 			{"UserIdTwo",  c.UserIDTwo},
 			{"timestamp",  c.Timestamp}})
 	fmt.Println("Inserted a single document: in contact collection ", insertResult.InsertedID)
-
-
-
-
-
-
-	
 	data, _ := json.Marshal(c)
 	fmt.Println(string(data))
 		w.Write(data)
 		
 }
-
-
-
-
-
-
-
-
-
-
 
 
 // function to handle /users request 
@@ -136,11 +113,6 @@ coll := client.Database("tracingapi").Collection("Users")
 	fmt.Println(string(data))
 		w.Write(data)
 }
-
-
-
-
-
 
 func main() {
 	
