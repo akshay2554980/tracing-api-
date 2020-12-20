@@ -34,16 +34,16 @@ type Contact struct {
 //function to handle /contact 
 
 func contactCreate(w http.ResponseWriter, r *http.Request) {
-    var c Contact
+    var c Contact                                                   
 
    
-    err := json.NewDecoder(r.Body).Decode(&c)
+    err := json.NewDecoder(r.Body).Decode(&c)                                  // decoding the json request from client                  
     if err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
-
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	                                                                        //starting connection to the database
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")           
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
@@ -56,8 +56,9 @@ func contactCreate(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Connected to MongoDB!")
 	coll := client.Database("tracingapi").Collection("Contact")
 	
-	//	fmt.Println("Connected to MongoDB!")        checking connection with db
+        //	fmt.Println("Connected to MongoDB!")        checking connection with db
 	
+	// inserting into the collection
 	  insertResult, err := coll.InsertOne(
 		context.Background(),
 		bson.D{
@@ -67,7 +68,7 @@ func contactCreate(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Inserted a single document: in contact collection ", insertResult.InsertedID)
 	data, _ := json.Marshal(c)
 	fmt.Println(string(data))
-		w.Write(data)
+		w.Write(data)                              // returning json format to client
 		
 }
 
@@ -111,7 +112,7 @@ coll := client.Database("tracingapi").Collection("Users")
 		
 	data, _ := json.Marshal(p)
 	fmt.Println(string(data))
-		w.Write(data)
+		w.Write(data)               // returning json format to client
 }
 
 func main() {
